@@ -1,0 +1,30 @@
+{
+    "name": "serial-monitor",
+    "version": "1.0.2",
+    "description": "A minimal Electron application with node serialport",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "install": "electron-rebuild"
+    },
+
+    "keywords": [
+        "monitor",
+        "Electron",
+        "serial",
+        "nodejs",
+        "tools"
+
+    ],
+    "author": "GitHub",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "electron": "^11.2.0",
+        "electron-rebuild": "^2.3.4"
+    },
+    "dependencies": {
+        "serialport": "^8.0.3",
+        "tableify": "^1.1.0",
+        "ws": "^7.4.2"
+    }
+}
