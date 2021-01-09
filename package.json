@@ -1,22 +1,24 @@
 {
     "name": "serial-monitor",
-    "version": "1.0.2",
-    "description": "A minimal Electron application with node serialport",
+    "version": "0.1.8",
+    "description": "Serial port monitor",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
         "install": "electron-rebuild"
+        "dist": "electron-builder --linux snap"
     },
-
+    "repository": "https://github.com/TRIDENTLAB-IN/serial-monitor.git",
     "keywords": [
         "monitor",
         "Electron",
         "serial",
         "nodejs",
-        "tools"
+        "tools",
+        "iot"
 
     ],
-    "author": "GitHub",
+    "author": "Trident Lab",
     "license": "CC0-1.0",
     "devDependencies": {
         "electron": "^11.2.0",
@@ -24,7 +26,6 @@
     },
     "dependencies": {
         "serialport": "^8.0.3",
-        "tableify": "^1.1.0",
         "ws": "^7.4.2"
     }
 }
