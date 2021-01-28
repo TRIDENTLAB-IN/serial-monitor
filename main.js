@@ -89,10 +89,11 @@ var serial_port=null;
 
 
 const SerialPort = require('serialport')
+const CCTalk = require('@serialport/parser-cctalk')
+const ByteLength = require('@serialport/parser-byte-length')
+console.log(CCTalk);
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-const Readline = require('@serialport/parser-readline')
 //const port = new SerialPort("/dev/ttyACM0", {
 //    baudRate:115200,
 //    databits: 8,
@@ -108,7 +109,6 @@ async function handlemsg(msg,callback){
   switch(obj.type){
     case "cmd":
     handlecmd(obj.cmd,obj,function(cmdout){
-
       callback(cmdout);
     })
 
@@ -148,6 +148,8 @@ async function handlecmd(cmd,obj,callback){
       serial_port.close();
       port_lock= false;
       serial_port = null;
+      var response = {"type":"msg","msg":"Port Closed"};
+      callback(JSON.stringify(response));
     }else{
       port_lock = true;
 
@@ -160,10 +162,38 @@ async function handlecmd(cmd,obj,callback){
           parity: 'none',
           stopBits: 1})
 
-      const parser = serial_port.pipe(new Readline({ delimiter: '\r\n' }))
-      parser.on('data',function(data){
-        pws.send(JSON.stringify({"type":"sd","sdata":data}));
+      serial_port.on('error', function (err) {
+        console.error("error", err);
+      });
+
+      serial_port.on('uncaughtException', function(err) {
+        console.log(err);
+      });
+
+
+      var response = {"type":"msg","msg":"Port Opned"};
+      callback(JSON.stringify(response));
+
+      //const Delimiter = require('@serialport/parser-delimiter')
+      ///const parser = serial_port.pipe(new Delimiter({ delimiter: '\n' }))
+      //parser.on('data', console.log) // emits data after every '\n'
+
+
+      //parser.on('data',function(data){
+      //  console.log(data);
+        //pws.send(JSON.stringify({"type":"sd","sdata":data}));
+      //})
+
+
+      const Regex = require('@serialport/parser-regex')
+      const parser = serial_port.pipe(new Regex({ regex: /[\r\n]+/ }))
+      parser.on('data',function(d){
+        pws.send(JSON.stringify({"type":"sd","sdata":d}));
       })
+
+
+
+
     }
 
     break;
